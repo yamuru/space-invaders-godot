@@ -1,0 +1,142 @@
+[gd_scene load_steps=8 format=3 uid="uid://1e114v550ahk"]
+
+[ext_resource type="Script" path="res://src/screens/game/game.gd" id="1_eausv"]
+[ext_resource type="PackedScene" uid="uid://bl2qwbwhus33a" path="res://src/components/2d/player/player.tscn" id="2_o02os"]
+[ext_resource type="Texture2D" uid="uid://cqmnwjkt0sr64" path="res://art/player_small.png" id="2_pjjtd"]
+[ext_resource type="PackedScene" uid="uid://bd1gqkc58syog" path="res://src/components/2d/wall/wall.tscn" id="3_h4mb0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p1k7t"]
+size = Vector2(64, 62)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_28kvh"]
+size = Vector2(28, 750)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_in0m0"]
+size = Vector2(662, 20)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_eausv")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Score" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 173.0
+offset_bottom = 66.0
+theme_override_font_sizes/font_size = 36
+text = "Score: 0"
+
+[node name="Instructions" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -255.0
+offset_top = -71.0
+offset_right = 255.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 32
+text = "SPACE to shoot, ARROWS to move"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI"]
+layout_direction = 3
+layout_mode = 1
+offset_left = 20.0
+offset_top = 15.0
+offset_right = 180.0
+offset_bottom = 65.0
+theme_override_constants/separation = 5
+
+[node name="LifePoint" type="TextureRect" parent="CanvasLayer/UI/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_pjjtd")
+
+[node name="LifePoint2" type="TextureRect" parent="CanvasLayer/UI/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_pjjtd")
+
+[node name="LifePoint3" type="TextureRect" parent="CanvasLayer/UI/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_pjjtd")
+
+[node name="PlayerWallBoundLeft" type="StaticBody2D" parent="."]
+position = Vector2(0, 850)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerWallBoundLeft"]
+shape = SubResource("RectangleShape2D_p1k7t")
+
+[node name="PlayerWallBoundRight" type="StaticBody2D" parent="."]
+position = Vector2(648, 850)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerWallBoundRight"]
+shape = SubResource("RectangleShape2D_p1k7t")
+
+[node name="DirectionToggleAreaLeft" type="Area2D" parent="."]
+position = Vector2(0, 400)
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DirectionToggleAreaLeft"]
+shape = SubResource("RectangleShape2D_28kvh")
+
+[node name="DirectionToggleAreaRight" type="Area2D" parent="."]
+position = Vector2(648, 400)
+collision_mask = 4
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DirectionToggleAreaRight"]
+shape = SubResource("RectangleShape2D_28kvh")
+
+[node name="GameLoseArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameLoseArea"]
+position = Vector2(324, 800)
+shape = SubResource("RectangleShape2D_in0m0")
+
+[node name="Wall" parent="." instance=ExtResource("3_h4mb0")]
+position = Vector2(108, 750)
+
+[node name="Wall2" parent="." instance=ExtResource("3_h4mb0")]
+position = Vector2(252, 750)
+
+[node name="Wall3" parent="." instance=ExtResource("3_h4mb0")]
+position = Vector2(396, 750)
+
+[node name="Wall4" parent="." instance=ExtResource("3_h4mb0")]
+position = Vector2(540, 750)
+
+[node name="Player" parent="." instance=ExtResource("2_o02os")]
+position = Vector2(324, 850)
+
+[node name="InstructionsTimer" type="Timer" parent="."]
+wait_time = 2.5
+autostart = true
+
+[node name="ShootingTimer" type="Timer" parent="."]
+wait_time = 1.2
+autostart = true
+
+[connection signal="body_entered" from="DirectionToggleAreaLeft" to="." method="_on_direction_toggle_area_body_entered"]
+[connection signal="body_exited" from="DirectionToggleAreaLeft" to="." method="_on_direction_toggle_area_body_exited"]
+[connection signal="body_entered" from="DirectionToggleAreaRight" to="." method="_on_direction_toggle_area_body_entered"]
+[connection signal="body_exited" from="DirectionToggleAreaRight" to="." method="_on_direction_toggle_area_body_exited"]
+[connection signal="body_entered" from="GameLoseArea" to="." method="_on_game_lose_area_body_entered"]
+[connection signal="timeout" from="InstructionsTimer" to="." method="_on_instructions_timer_timeout"]
+[connection signal="timeout" from="ShootingTimer" to="." method="_on_shooting_timer_timeout"]

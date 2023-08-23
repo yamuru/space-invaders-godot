@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bd1gqkc58syog"]
+
+[ext_resource type="Script" path="res://src/components/2d/wall/wall.gd" id="1_dd7hb"]
+[ext_resource type="Texture2D" uid="uid://b34c17cljorav" path="res://art/wall1.png" id="2_yaqxd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_by8p7"]
+size = Vector2(70, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mdibd"]
+size = Vector2(74, 54)
+
+[node name="Wall" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 48
+script = ExtResource("1_dd7hb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_yaqxd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_by8p7")
+
+[node name="BodyDetector" type="Area2D" parent="."]
+collision_mask = 52
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyDetector"]
+shape = SubResource("RectangleShape2D_mdibd")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"Walls"
+
+[connection signal="body_entered" from="BodyDetector" to="." method="_on_body_detector_body_entered"]

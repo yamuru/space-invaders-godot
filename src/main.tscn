@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://clryxcllkfhfe"]
+
+[ext_resource type="Script" path="res://src/main.gd" id="1_8e6iv"]
+[ext_resource type="AudioStream" uid="uid://123sobce6crt" path="res://audio/interface/click.ogg" id="1_x4mxn"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_8e6iv")
+
+[node name="InterfaceStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_x4mxn")
+bus = &"Interface"

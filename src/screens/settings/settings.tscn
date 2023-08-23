@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0kk3tp0q6eup"]
+
+[ext_resource type="Script" path="res://src/screens/settings/settings.gd" id="1_3n1oq"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3n1oq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 150
+
+[node name="SettingTitle" type="Label" parent="VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+text = "Volume"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CenterContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="VolumeLower" type="Button" parent="VBoxContainer/CenterContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "<"
+flat = true
+
+[node name="VolumeValue" type="Label" parent="VBoxContainer/CenterContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "5"
+
+[node name="VolumeHigher" type="Button" parent="VBoxContainer/CenterContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = ">"
+flat = true
+
+[node name="BackButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Go Back"
+flat = true
+
+[connection signal="pressed" from="VBoxContainer/CenterContainer/HBoxContainer/HBoxContainer/VolumeLower" to="." method="_on_volume_lower_pressed"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/HBoxContainer/HBoxContainer/VolumeHigher" to="." method="_on_volume_higher_pressed"]
+[connection signal="pressed" from="VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
